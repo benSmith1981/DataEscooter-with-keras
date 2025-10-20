@@ -23,3 +23,4 @@ plt.xlabel("Vehicle Type")
 plt.ylabel("Average Rating")
 plt.show()
 
+#Q1: Can you get the vehicle type for average length of trip and the graph this?
