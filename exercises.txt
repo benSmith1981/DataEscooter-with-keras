@@ -1,0 +1,93 @@
+Install: 
+pip install pandas tensorflow plotly scikit-learn dash --user
+
+
+
+🧩 Exercises (Progressive Difficulty)
+Exercise 1: Basic Exploration
+
+Print the shape of the dataset (number of rows and columns).
+
+Display all column names.
+
+Show how many different vehicle types there are.
+
+Find the total number of trips.
+
+
+Exercise 2: Simple Summaries
+
+Find the average trip distance.
+
+Find the average duration for each vehicle type.
+
+Which vehicle type has the highest average ride rating?
+
+
+Exercise 3: Filtering and Sorting
+
+Display all trips longer than 20 minutes.
+
+Find the top 5 longest trips by distance.
+
+Filter trips where the battery dropped by more than 20%.
+
+
+Exercise 4: Grouping and Aggregation
+
+Group trips by vehicle_type and show:
+
+Average distance
+
+Average duration
+
+Average rating
+
+Find the day and hour with the most trips (hint: use pd.to_datetime and dt.hour).
+
+
+Exercise 5: Geospatial & Insights
+
+Create a new column for battery_used = battery_start - battery_end.
+
+Plot a simple scatter chart of start vs end locations (optional).
+
+Find which latitude range (approx.) has the most trip starts.
+
+Predict which vehicle type might need most charging attention based on average battery drop.
+
+🧩 Follow-up Exercises
+Exercise 6: Parking Analysis
+
+Find which hub has the highest utilisation (vehicles_present / capacity * 100).
+
+Identify any hubs that are over 90% full.
+
+Plot a bar chart of parking utilisation per hub.
+
+
+Exercise 7: Vehicle Analysis
+
+Count how many vehicles are currently charging.
+
+Calculate the average battery level for each vehicle type.
+
+Which hub has the lowest average battery level among vehicles parked there?
+
+
+Exercise 8: Data Joining
+
+Merge the vehicles dataset with the parking dataset on hub_id.
+
+Create a new column showing battery deficiency (100 - battery_level).
+
+Find which hub has the highest total battery deficiency across its vehicles (good indicator of where charging resources should go).
+
+
+Exercise 9: Combined Insight
+
+Combine all datasets to:
+
+Find the most common start location (from trips) that leads to a low-battery vehicle ending up at a particular hub.
+
+Identify any patterns in battery depletion by hub or vehicle type.
