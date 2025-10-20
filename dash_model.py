@@ -7,11 +7,10 @@ import numpy as np
 import joblib
 
 # Load trained model
-model = keras.models.load_model("demand_predictor_model.h5", compile=False)
+model = keras.models.load_model("demand_predictor_model.keras", compile=False)
 
 # Load data
 df = pd.read_csv("ims_big_dummy_trips.csv", parse_dates=["start_time"])
-
 # Prepare hubs data
 hubs = df.groupby(["hub_id", "hub_name"]).agg({"lat": "mean", "lng": "mean"}).reset_index()
 
@@ -109,33 +108,33 @@ app.layout = html.Div([
         dcc.Slider(6, 22, 1, value=8, marks={h: str(h) for h in range(6, 23)}, id="hour-slider")
     ], style={"width": "80%", "margin": "auto"}),
 
-    dcc.Graph(id="heatmap")
-])
+    dcc.Graph(id="heatmap"),
 
+    dcc.Dropdown(
+        options=[{"label": vt, "value": vt} for vt in df["vehicle_type"].unique()],
+        value="e-bike",
+        id="vehicle-dropdown"
+    )
+])
 @app.callback(
     Output("heatmap", "figure"),
     Input("hour-slider", "value")
 )
-def update_map(selected_hour):
-    # Use saved encoder if available
-    try:
-        enc = joblib.load("encoder.joblib")
-    except:
-        enc = OneHotEncoder()
-        # Dummy fit — adjust based on how you trained
-        enc.fit([[hub["hub_id"], 12, 0] for _, hub in hubs.iterrows()])
 
-    # Prepare input for prediction
+
+def update_map(selected_hour):
+    enc = joblib.load("encoder.joblib")
+    # enc = OneHotEncoder(handle_unknown='ignore')
+    # Prepare input using same columns as during training
     X_input = []
     for _, hub in hubs.iterrows():
-        X_input.append([hub["hub_id"], selected_hour, 0])  # 0 = Monday
+        X_input.append(["e-bike", selected_hour, 0])  # vehicle_type, hour, dayofweek
+
     X_input = enc.transform(X_input).toarray()
 
-    # Predict demand
     predictions = model.predict(X_input).flatten()
     hubs["predicted_demand"] = predictions
 
-    # Return updated heatmap
     fig = px.scatter_mapbox(
         hubs, lat="lat", lon="lng", size="predicted_demand", color="predicted_demand",
         hover_name="hub_name", color_continuous_scale="Reds",
